@@ -4,11 +4,35 @@ $(function(){
 });
 
 function send_letter() {
+	console.log("hahhahahha");
 	$("#sendModal").modal("hide");
+	var toName = $("#recipient-name").val();
+	var content = $("#message-text").val();
+	//ajax
+	$.post(
+		CONTEXT_PATH+"/letter/send",
+		{
+			"toName":toName,
+			"content":content
+		},
+		function (data) {
+			//json格式转为js对象
+			data = $.parseJSON(data);
+			if(data.code == 0){ //成功，返回给提示框
+				$("#hintBody").text("发送成功");
+			}else{
+				$("#hintBody").text(data.msg);
+			}
+		}
+
+	)
 	$("#hintModal").modal("show");
 	setTimeout(function(){
 		$("#hintModal").modal("hide");
+		location.reload();
 	}, 2000);
+
+
 }
 
 function delete_msg() {

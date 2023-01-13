@@ -37,4 +37,14 @@ public class discussPostServiceImpl implements discussPostService{
         discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
         return discussPostMapper.insertDiscussPost(discussPost);
     }
+
+    @Override
+    public discussPost findDiscussPostById(int id) {
+        return discussPostMapper.selectDiscussPostById(id);
+    }
+
+    @Override
+    public int updateCommentCount(int postId, int commentCount) {
+        return discussPostMapper.updateCommentCount(postId,commentCount);
+    }
 }

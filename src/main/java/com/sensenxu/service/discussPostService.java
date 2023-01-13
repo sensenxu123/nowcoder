@@ -9,4 +9,6 @@ public interface discussPostService {
     List<discussPost> findDiscussPosts(int userId, int offset, int limit);
     int selectDiscussPostRows(int userId);
     int addDiscussPost(discussPost discussPost);
+    discussPost findDiscussPostById(int id);
+    int updateCommentCount(int postId, int commentCount);
 }

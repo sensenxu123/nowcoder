@@ -15,6 +15,7 @@ public interface userService {
     void logout(String ticket);
     loginTicket findLoginTicket(String ticket);
     int updateHeader(int userId, String headUrl);
-     int updatePassword(int userId, String password);
+    int updatePassword(int userId, String password);
 
+    User findUserByName(String toName);
 }
