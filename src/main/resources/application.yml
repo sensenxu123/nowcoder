@@ -46,3 +46,10 @@ server:
 
 
 
+logging:
+  level:
+    com:
+      sensenxu: debug
+  file:
+    name: /Users/xutianyi/Documents/后端开发/community.log
+

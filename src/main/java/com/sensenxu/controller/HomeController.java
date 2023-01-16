@@ -16,13 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @Controller
 public class HomeController {
     @Autowired
     private discussPostService discussPostService;
     @Autowired
     private userService userService;
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = GET)
     public String getIndexPage(Model model, Page page){
         //方法调用前，model和page都会自动实例化，并且将page注入到model中
         page.setRows(discussPostService.selectDiscussPostRows(0));
@@ -50,6 +52,10 @@ public class HomeController {
         model.addAttribute("discussPosts", discussPosts);
 
         return "/index";
+    }
+    @RequestMapping(value = "/error",method = GET)
+    public String getErrorPage(){
+        return "/error/500";
     }
 
 }

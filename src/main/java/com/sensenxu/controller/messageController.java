@@ -39,7 +39,7 @@ public class messageController {
         List<Message> conversationList = messageService.findConversations(user.getId(), page.getOffset(), page.getLimit());
 
         List<Map<String, Object>> conversations = new ArrayList<>();
-        if (conversationList != null) {
+        if (conversationList != null)  {
             for (Message message : conversationList) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("conversation", message);
@@ -125,6 +125,7 @@ public class messageController {
     @ResponseBody
     public String sendLetter(String toName, String content) {
         //取到要接受者的user对象
+        //int i = 1/0;
         User target = userService.findUserByName(toName);
         if (target == null) {
             return communityUtil.getJSONString(1, "目标用户不存在!");
