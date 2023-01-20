@@ -5,6 +5,7 @@ import com.sensenxu.entity.User;
 import com.sensenxu.entity.discussPost;
 import com.sensenxu.service.commentService;
 import com.sensenxu.service.discussPostService;
+import com.sensenxu.service.likeService;
 import com.sensenxu.service.userService;
 import com.sensenxu.util.communityUtil;
 import com.sensenxu.util.hostHolder;
@@ -32,6 +33,8 @@ public class discussPostController {
     private userService userService;
     @Autowired
     private hostHolder hostHolder;
+    @Autowired
+    private likeService likeService;
     @Autowired
     private commentService commentService;
 
@@ -64,6 +67,12 @@ public class discussPostController {
         //作者
         User user = userService.findUserById(userId);
         model.addAttribute("user",user);
+        //点赞
+        long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostid);
+        model.addAttribute("likeCount",likeCount);
+        int likeStatus = hostHolder.getUser() == null ? 0 :
+                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostid);
+        model.addAttribute("likeStatus", likeStatus);
         //评论分页信息
         page.setLimit(5);
         page.setPath("/discuss/detail/"+discussPostid);
@@ -82,6 +91,14 @@ public class discussPostController {
                 commentVo.put("user",userService.findUserById(comment.getUserId()));
                 //查询出全部的评论的评论，仅遍历使用
                 List<Comment> replyList = commentService.findCommentByEntity(ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
+
+                likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeCount", likeCount);
+                likeStatus = hostHolder.getUser() == null ? 0 :
+                        likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeStatus",likeStatus);
+
+
                 //回复列表
                 List<Map<String,Object>> replyVoList = new ArrayList<>();
                 if(replyList != null){
@@ -94,6 +111,14 @@ public class discussPostController {
                         //回复的目标 是否指向别的用户
                         User target = reply.getTargetId() == 0 ? null: userService.findUserById(reply.getTargetId());
                         replyVo.put("target",target);
+
+                        likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
+                        replyVo.put("likeCount", likeCount);
+                        likeStatus = hostHolder.getUser() == null ? 0 :
+                                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, reply.getId());
+                        replyVo.put("likeStatus",likeStatus);
+
+
                         //整合所有的回复
                         replyVoList.add(replyVo);
                     }

@@ -2,6 +2,7 @@ package com.sensenxu.controller;
 
 import com.sensenxu.annotation.loginRequired;
 import com.sensenxu.entity.User;
+import com.sensenxu.service.likeService;
 import com.sensenxu.service.userService;
 import com.sensenxu.util.communityUtil;
 import com.sensenxu.util.hostHolder;
@@ -40,6 +41,8 @@ public class userController {
     private String contextPath;
     @Autowired
     private hostHolder hostHolder;
+    @Autowired
+    private likeService likeService;
 
     @loginRequired
     @RequestMapping(value = "/setting" , method = RequestMethod.GET)
@@ -125,6 +128,21 @@ public class userController {
         //user.setSalt(communityUtil.generateUUID().substring(0,5));
         userService.updatePassword(user.getId(),communityUtil.md5(newPassword+user.getSalt()));
         return "redirect:/index"; //去首页
+    }
+    /**
+     * 个人主页
+     */
+    @RequestMapping(value = "/profile/{userId}" , method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable int userId, Model model){
+        User user = userService.findUserById(userId);
+        if(user == null) throw  new RuntimeException("用户不存在");
+        //用户
+        model.addAttribute("user", user);
+        //点赞数量
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+
+        return "/site/profile";
     }
 
 

@@ -85,6 +85,11 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.7</version>
         </dependency>
+        <!-- springboot整合redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
 
     </dependencies>
