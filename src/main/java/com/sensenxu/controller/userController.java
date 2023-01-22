@@ -2,8 +2,10 @@ package com.sensenxu.controller;
 
 import com.sensenxu.annotation.loginRequired;
 import com.sensenxu.entity.User;
+import com.sensenxu.service.followService;
 import com.sensenxu.service.likeService;
 import com.sensenxu.service.userService;
+import com.sensenxu.util.communityConstant;
 import com.sensenxu.util.communityUtil;
 import com.sensenxu.util.hostHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +29,7 @@ import java.io.OutputStream;
 
 @Controller
 @RequestMapping("/user")
-public class userController {
+public class userController implements communityConstant {
     private static final Logger logger =  LoggerFactory.getLogger(userController.class);
 
     @Autowired
@@ -43,6 +45,8 @@ public class userController {
     private hostHolder hostHolder;
     @Autowired
     private likeService likeService;
+    @Autowired
+    private followService followService;
 
     @loginRequired
     @RequestMapping(value = "/setting" , method = RequestMethod.GET)
@@ -141,6 +145,22 @@ public class userController {
         //点赞数量
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
+        /**
+         * 这个方法里的userId是访问的某个人的主页，不是登陆的用户
+         * 登陆的用户用hostholder来取
+         */
+        //关注数量
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+        //粉丝数量
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+        //是否已关注访问的用户
+         boolean hasFollowed = false;
+         if(hostHolder.getUser() != null){
+             hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER,userId);
+         }
+         model.addAttribute("hasFollowed",hasFollowed);
 
         return "/site/profile";
     }
