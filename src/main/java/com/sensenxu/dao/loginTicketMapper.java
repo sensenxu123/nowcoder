@@ -4,6 +4,7 @@ import com.sensenxu.entity.loginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated
 public interface loginTicketMapper {
     @Insert({
             "insert into login_ticket(user_id,ticket,status,expired) ",
