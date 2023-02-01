@@ -1,7 +1,9 @@
 package com.sensenxu.controller;
 
+import com.sensenxu.entity.Event;
 import com.sensenxu.entity.Page;
 import com.sensenxu.entity.User;
+import com.sensenxu.event.EventProducer;
 import com.sensenxu.service.followService;
 import com.sensenxu.service.userService;
 import com.sensenxu.util.communityConstant;
@@ -26,6 +28,8 @@ public class followController implements communityConstant {
     private followService followService;
     @Autowired
     private userService userService;
+    @Autowired
+    private EventProducer eventProducer;
 
     @RequestMapping(value = "/follow",method = RequestMethod.POST)
     @ResponseBody
@@ -33,6 +37,16 @@ public class followController implements communityConstant {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType,entityId);
+        //触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
+
+
         return communityUtil.getJSONString(0,"已关注");
     }
 

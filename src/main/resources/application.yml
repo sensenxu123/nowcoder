@@ -28,6 +28,16 @@ spring:
     database: 11
     host: localhost
     port: 6379
+  #kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: community-consumer-group
+      #是否自动提交消费者的偏移量
+      enable-auto-commit: true
+      #自动提交的评率 3000毫秒
+      auto-commit-interval: 3000
+
 
 
 mybatis:
@@ -58,3 +68,4 @@ logging:
     name: /Users/xutianyi/Documents/后端开发/community.log
 
 #RedisProperties
+

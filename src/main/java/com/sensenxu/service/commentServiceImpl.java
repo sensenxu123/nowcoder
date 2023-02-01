@@ -48,4 +48,9 @@ public class commentServiceImpl implements commentService , communityConstant {
         return rows;
 
     }
+
+    @Override
+    public Comment findCommentById(int id) {
+        return commentMapper.selectCommentById(id);
+    }
 }
