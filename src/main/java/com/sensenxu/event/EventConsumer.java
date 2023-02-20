@@ -3,6 +3,9 @@ package com.sensenxu.event;
 import com.alibaba.fastjson.JSONObject;
 import com.sensenxu.entity.Event;
 import com.sensenxu.entity.Message;
+import com.sensenxu.entity.discussPost;
+import com.sensenxu.service.discussPostService;
+import com.sensenxu.service.elasticSearchService;
 import com.sensenxu.service.messageService;
 import com.sensenxu.util.communityConstant;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -23,6 +26,9 @@ public class EventConsumer implements communityConstant {
 
     @Autowired
     private messageService messageService;
+    @Autowired
+    private discussPostService discussPostService;
+
 
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
     public void handleCommentMessage(ConsumerRecord record) {
@@ -59,4 +65,41 @@ public class EventConsumer implements communityConstant {
         message.setContent(JSONObject.toJSONString(content));
         messageService.addMessage(message);
     }
+
+    ////消费发帖事件
+    //@KafkaListener(topics = {TOPIC_PUBLISH})
+    //public void handlePublishMessage(ConsumerRecord record) {
+    //    if (record == null || record.value() == null) {
+    //        logger.error("消息的内容为空!");
+    //        return;
+    //    }
+    //
+    //    Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+    //    if (event == null) {
+    //        logger.error("消息格式错误!");
+    //        return;
+    //    }
+    //
+    //    discussPost post = discussPostService.findDiscussPostById(event.getEntityId());
+    //    elasticSearchService.saveDiscussPost(post);
+    //}
+    //
+    //// 消费删帖事件
+    //@KafkaListener(topics = {TOPIC_DELETE})
+    //public void handleDeleteMessage(ConsumerRecord record) {
+    //    if (record == null || record.value() == null) {
+    //        logger.error("消息的内容为空!");
+    //        return;
+    //    }
+    //
+    //    Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+    //    if (event == null) {
+    //        logger.error("消息格式错误!");
+    //        return;
+    //    }
+    //
+    //    elasticSearchService.deleteDiscussPost(event.getEntityId());
+    //}
+
+
 }

@@ -1,8 +1,6 @@
 package com.sensenxu.controller;
-import com.sensenxu.entity.Comment;
-import com.sensenxu.entity.Page;
-import com.sensenxu.entity.User;
-import com.sensenxu.entity.discussPost;
+import com.sensenxu.entity.*;
+import com.sensenxu.event.EventProducer;
 import com.sensenxu.service.commentService;
 import com.sensenxu.service.discussPostService;
 import com.sensenxu.service.likeService;
@@ -19,12 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
-import static com.sensenxu.util.communityConstant.ENTITY_TYPE_COMMENT;
-import static com.sensenxu.util.communityConstant.ENTITY_TYPE_POST;
+import static com.sensenxu.util.communityConstant.*;
 
 @Controller
 @RequestMapping("/discuss")
-public class discussPostController {
+public class  discussPostController {
 
 
     @Autowired
@@ -37,6 +34,9 @@ public class discussPostController {
     private likeService likeService;
     @Autowired
     private commentService commentService;
+
+    @Autowired
+    private EventProducer eventProducer;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
@@ -54,6 +54,10 @@ public class discussPostController {
         post.setCommentCount(0);
         post.setCreateTime(new Date());
         disucssPostService.addDiscussPost(post);
+
+
+
+
         //报错的情况 之后统一处理
         return communityUtil.getJSONString(0,"发布成功");
     }

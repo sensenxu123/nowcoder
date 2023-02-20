@@ -38,6 +38,11 @@ spring:
       #自动提交的评率 3000毫秒
       auto-commit-interval: 3000
 
+#  data:
+#    elasticsearch:
+#      cluster-name: nowcoder
+#      cluster-nodes: 127.0.0.1:9300
+
 
 
 mybatis:
@@ -67,5 +72,4 @@ logging:
   file:
     name: /Users/xutianyi/Documents/后端开发/community.log
 
-#RedisProperties
 

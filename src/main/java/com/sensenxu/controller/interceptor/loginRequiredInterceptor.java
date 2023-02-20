@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 @Component
-public class loginRequiredInterceptor implements HandlerInterceptor {
+public class  loginRequiredInterceptor implements HandlerInterceptor {
     @Autowired
     private hostHolder hostHolder;
 

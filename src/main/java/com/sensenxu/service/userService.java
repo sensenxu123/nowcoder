@@ -2,7 +2,9 @@ package com.sensenxu.service;
 
 import com.sensenxu.entity.User;
 import com.sensenxu.entity.loginTicket;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.Map;
 
 
@@ -18,4 +20,6 @@ public interface userService {
     int updatePassword(int userId, String password);
 
     User findUserByName(String toName);
+
+    public Collection<? extends GrantedAuthority> getAuthorities(int userId);
 }

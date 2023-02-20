@@ -51,7 +51,9 @@ public class commentController implements communityConstant {
             event.setEntityUserId(target.getUserId());//获得评论的作者
         }
 
-        eventProducer.fireEvent(event);
+        //触发发帖事件
+
+
 
 
 

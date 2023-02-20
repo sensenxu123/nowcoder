@@ -30,9 +30,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
                 //.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
 
-        registry.addInterceptor(loginRequiredInterceptor)//拦截一切请求
-                .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
-        //.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
+        //registry.addInterceptor(loginRequiredInterceptor)//拦截一切请求
+        //        .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
+        ////.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
 
         registry.addInterceptor(messageInterceptor)//拦截一切请求
                 .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
