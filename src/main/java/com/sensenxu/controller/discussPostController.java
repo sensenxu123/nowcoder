@@ -7,6 +7,7 @@ import com.sensenxu.service.likeService;
 import com.sensenxu.service.userService;
 import com.sensenxu.util.communityUtil;
 import com.sensenxu.util.hostHolder;
+import com.sensenxu.util.redisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ public class  discussPostController {
 
 
     @Autowired
-    private discussPostService disucssPostService;
+    private discussPostService discussPostService;
     @Autowired
     private userService userService;
     @Autowired
@@ -53,7 +54,7 @@ public class  discussPostController {
         post.setStatus(0);
         post.setCommentCount(0);
         post.setCreateTime(new Date());
-        disucssPostService.addDiscussPost(post);
+        discussPostService.addDiscussPost(post);
 
 
 
@@ -65,7 +66,7 @@ public class  discussPostController {
     @RequestMapping(value = "/detail/{discussPostid}",method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable int discussPostid, Model model, Page page){
         //帖子
-        discussPost post = disucssPostService.findDiscussPostById(discussPostid);
+        discussPost post = discussPostService.findDiscussPostById(discussPostid);
         model.addAttribute("post",post);
         Integer userId = post.getUserId();
         //作者
@@ -140,4 +141,61 @@ public class  discussPostController {
         return  "/site/discuss-detail";
 
     }
+
+    // 置顶
+    @RequestMapping(path = "/top", method = RequestMethod.POST)
+    @ResponseBody
+    public String setTop(int id) {
+        discussPostService.updateType(id, 1);
+
+        // 触发发帖事件
+        //Event event = new Event()
+        //        .setTopic(TOPIC_PUBLISH)
+        //        .setUserId(hostHolder.getUser().getId())
+        //        .setEntityType(ENTITY_TYPE_POST)
+        //        .setEntityId(id);
+        //eventProducer.fireEvent(event);
+
+        return communityUtil.getJSONString(0);
+    }
+
+    // 加精
+    @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    @ResponseBody
+    public String setWonderful(int id) {
+        discussPostService.updateStatus(id, 1);
+
+        // 触发发帖事件
+        //Event event = new Event()
+        //        .setTopic(TOPIC_PUBLISH)
+        //        .setUserId(hostHolder.getUser().getId())
+        //        .setEntityType(ENTITY_TYPE_POST)
+        //        .setEntityId(id);
+        //eventProducer.fireEvent(event);
+
+        // 计算帖子分数
+        //String redisKey = redisKeyUtil.getPostScoreKey();
+        //redisTemplate.opsForSet().add(redisKey, id);
+
+        return communityUtil.getJSONString(0);
+    }
+
+    // 删除
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String setDelete(int id) {
+        discussPostService.updateStatus(id, 2);
+
+        //// 触发删帖事件
+        //Event event = new Event()
+        //        .setTopic(TOPIC_DELETE)
+        //        .setUserId(hostHolder.getUser().getId())
+        //        .setEntityType(ENTITY_TYPE_POST)
+        //        .setEntityId(id);
+        //eventProducer.fireEvent(event);
+
+        return communityUtil.getJSONString(0);
+    }
+
+
 }

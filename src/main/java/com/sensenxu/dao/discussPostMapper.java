@@ -17,6 +17,11 @@ public interface discussPostMapper{
     //增加评论后 字段comment_count增加 更新数量
     int updateCommentCount(int postId, int commentCount);
 
+    int updateType(int id, int type);
+
+    int updateStatus(int id, int status);
+
+    int updateScore(int id, double score);
 
 
 
