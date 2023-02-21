@@ -88,4 +88,5 @@ public class RedisTest {
         });
         System.out.println(obj);
     }
+
 }

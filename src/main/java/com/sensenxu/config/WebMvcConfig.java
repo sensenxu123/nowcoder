@@ -1,6 +1,7 @@
 package com.sensenxu.config;
 
 import com.sensenxu.controller.AlphaInterceptor;
+import com.sensenxu.controller.interceptor.DataInterceptor;
 import com.sensenxu.controller.interceptor.loginRequiredInterceptor;
 import com.sensenxu.controller.interceptor.loginTicketInterceptor;
 import com.sensenxu.controller.interceptor.messageInterceptor;
@@ -19,6 +20,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private loginRequiredInterceptor loginRequiredInterceptor;
     @Autowired
     private messageInterceptor messageInterceptor;
+    @Autowired
+    private DataInterceptor dataInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -35,6 +38,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ////.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
 
         registry.addInterceptor(messageInterceptor)//拦截一切请求
+                .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
+        //.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
+        registry.addInterceptor(dataInterceptor)//拦截一切请求
                 .excludePathPatterns("/**/*.css","/**/*.js","/**/*.png","/**/*.jpg","/**/*.jpeg");
         //.addPathPatterns("/register","/login"); 拦截全部的  去除这一行
     }
